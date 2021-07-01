@@ -301,6 +301,43 @@ def post_single_dream(dreamer_name: str, dream: Dream, httpResponse: Response):
 
  
 #----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+
+
+@app.get("/todo", status_code=200)
+def get_dreams(httpResponse: Response):
+    table = dynamodb.Table('kanban')
+    
+    response = table.query(    KeyConditionExpression=Key('pk').eq('todo')    )
+    
+    #response = table.scan(FilterExpression=Attr('type').eq("todo"))
+    
+    items = response['Items']
+    if (items == []):
+        httpResponse.status_code = 400
+        return {"message": "Fehler! Es gibt keine Träume. - GET /dreams"}
+    return items
+
+
+@app.get("/progress", status_code=200)
+def get_dreams(httpResponse: Response):
+    table = dynamodb.Table('kanban')
+    
+    response = table.query(    KeyConditionExpression=Key('pk').eq('progress')    )
+    
+    #response = table.scan(FilterExpression=Attr('type').eq("todo"))
+    
+    items = response['Items']
+    if (items == []):
+        httpResponse.status_code = 400
+        return {"message": "Fehler! Es gibt keine Träume. - GET /dreams"}
+    return items
+
+#----------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 @app.get("/reviews")
@@ -341,7 +378,7 @@ def wildcard(variable: str):
 
 
 #----------------------------------------------------------------------------------------------------------
-
+#----------------------------------------------------------------------------------------------------------
 
 
 """
