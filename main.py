@@ -362,10 +362,12 @@ def read_item_id(item_id: int, q: str):
         return {"item_id": item_id, "q": q}
     else:
         return {"item_id": item_id}
-    
-@app.get("/{variable}")
+
+
+
+@app.get("/{variable}", status_code=400)
 def wildcard(variable: str):
-    return {"message":"This is wildcard-endpoint. Endpunkte: dreamers, dreams"}
+    return {"message":"This is wildcard-endpoint. Endpunkte: dreamers, dreams, todo, progress, done"}
 
 
 
