@@ -302,43 +302,36 @@ def post_single_dream(dreamer_name: str, dream: Dream, httpResponse: Response):
  
 #----------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------
-
-
 @app.get("/todo", status_code=200)
-def get_dreams(httpResponse: Response):
+def _get_todo(httpResponse: Response):
     table = dynamodb.Table('kanban')
-    
     response = table.query(    KeyConditionExpression=Key('pk').eq('todo')    )
-    
-    #response = table.scan(FilterExpression=Attr('type').eq("todo"))
-    
     items = response['Items']
     if (items == []):
         httpResponse.status_code = 400
-        return {"message": "Fehler! Es gibt keine Träume. - GET /dreams"}
+        return {"message": "Fehler! Es gibt keine Todo-Items. - GET /todo"}
     return items
-
 
 @app.get("/progress", status_code=200)
-def get_dreams(httpResponse: Response):
+def _get_progress(httpResponse: Response):
     table = dynamodb.Table('kanban')
-    
-    response = table.query(    KeyConditionExpression=Key('pk').eq('progress')    )
-    
-    #response = table.scan(FilterExpression=Attr('type').eq("todo"))
-    
+    response = table.query(    KeyConditionExpression=Key('pk').eq('progress')    )    
     items = response['Items']
     if (items == []):
         httpResponse.status_code = 400
-        return {"message": "Fehler! Es gibt keine Träume. - GET /dreams"}
+        return {"message": "Fehler! Es gibt keine In-Progress-Items. - GET /progress"}
     return items
 
+@app.get("/done", status_code=200)
+def _get_done(httpResponse: Response):
+    table = dynamodb.Table('kanban')
+    response = table.query(    KeyConditionExpression=Key('pk').eq('done')    )    
+    items = response['Items']
+    if (items == []):
+        httpResponse.status_code = 400
+        return {"message": "Fehler! Es gibt keine Done-Items. - GET /done"}
+    return items
 #----------------------------------------------------------------------------------------------------------
-
-
-
-
-
 
 @app.get("/reviews")
 def read_reviews():
